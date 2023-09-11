@@ -80,6 +80,7 @@ function SideDrawer() {
       const { data } = await axios.get(`http://localhost:5000/api/user?search=${search}`, config);
 
       setLoading(false);
+      console.log(data)
       setSearchResult(data);
     } catch (error) {
       toast({
@@ -136,7 +137,7 @@ function SideDrawer() {
         <Tooltip label="Search Users to chat" hasArrow placement="bottom-end">
           <Button variant="ghost" onClick={onOpen}>
             <i className="fas fa-search"></i>
-            <Text d={{ base: "none", md: "flex" }} px={4}>
+            <Text d={{ base: "none", md: "flex" }} px={4} >
               Search User
             </Text>
           </Button>

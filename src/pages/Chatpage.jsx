@@ -5,21 +5,29 @@ import MyChats from "../components/MyChats";
 import SideDrawer from "../components/miscellaneous/SideDrawer";
 import { ChatState } from "../Context/ChatProvider";
 import Navbar from '../components/navbar/Navbar'
+
 const Chatpage = () => {
   const [fetchAgain, setFetchAgain] = useState(false);
   const { user } = ChatState();
 
   return (
     <Navbar user={user}>
-    <div style={{ width: "100%" }}>
-      {user && <SideDrawer />}
-      <Box d="flex" justifyContent="space-between" w="100%" h="91.5vh" p="10px">
-        {user && <MyChats fetchAgain={fetchAgain} />}
-        {user && (
-          <Chatbox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />
-        )}
-      </Box>
-    </div>
+        {user && <SideDrawer />}
+      <div className="lg:flex">
+        <Box
+          w="100%"
+          h="91.5vh"
+          p="10px"
+          className="lg:w-2/3"
+        >
+          {user && (
+            <div className="flex flex-col lg:flex-row">
+              <MyChats fetchAgain={fetchAgain} className="lg:w-1/2" />
+              <Chatbox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} className="lg:w-1/2" />
+            </div>
+          )}
+        </Box>
+      </div>
     </Navbar>
   );
 };

@@ -22,3 +22,30 @@ code {
   overflow-y: scroll;
   scrollbar-width: none;
 }
+
+/* Add CSS styles for the buttons */
+.chart-toggle-buttons {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.chart-toggle-button {
+  padding: 10px 20px;
+  margin: 0 10px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: #007BFF;
+  color: #fff;
+  transition: background-color 0.3s;
+}
+
+.chart-toggle-button.active {
+  background-color: #0056b3;
+}
+
+.chart-toggle-button:hover {
+  background-color: #0056b3;
+}

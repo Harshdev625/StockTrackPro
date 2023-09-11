@@ -1,13 +1,16 @@
-import { useEffect, useState, useRef } from 'react';
-import axios from 'axios';
-import Chart from 'chart.js/auto';
-import { Line } from 'react-chartjs-2';
+import { useEffect, useState } from 'react';
+// import { Line, Bar } from 'react-chartjs-2';
+import 'chart.js/auto';
+import { Chart } from 'react-chartjs-2';
 
 const SYMBOL = 'IBM'; // Replace with the stock symbol you want to fetch
 
-const arr=['Opening Price','Highest Price','Lowest Price','Closing Price','Total Stock']
+const arr = ['Opening Price', 'Highest Price', 'Lowest Price', 'Closing Price', 'Total Stock'];
+
 function StockChart() {
-   const [chartData, setChartData] = useState({
+  const [chartType, setChartType] = useState('Line');
+
+  const [chartData, setChartData] = useState({
     labels: [],
     datasets: [
       {
@@ -20,7 +23,19 @@ function StockChart() {
     ],
   });
 
-  // Function to update chart data
+  const [barChartData, setBarChartData] = useState({
+    labels: [],
+    datasets: [
+      {
+        label: 'Bar Data',
+        data: [],
+        backgroundColor: 'rgba(255, 99, 132, 0.2)', // Specify the background color for bars
+        borderColor: 'rgba(255, 99, 132, 1)',
+        borderWidth: 1,
+      },
+    ],
+  });
+
   const updateChartData = (newData) => {
     setChartData((prevData) => ({
       ...prevData,
@@ -32,24 +47,54 @@ function StockChart() {
         },
       ],
     }));
+
+    setBarChartData((prevData) => ({
+      ...prevData,
+      labels: [...prevData.labels, new Date().toLocaleTimeString()],
+      datasets: [
+        {
+          ...prevData.datasets[0],
+          data: [...prevData.datasets[0].data, newData],
+        },
+      ],
+    }));
   };
 
-  // Simulate real-time data (replace this with your WebSocket logic)
   useEffect(() => {
     const interval = setInterval(() => {
       const newDataPoint = Math.random() * 100;
       updateChartData(newDataPoint);
-    }, 1000);
+    }, 2000);
 
-    // Clean up the interval on component unmount
     return () => clearInterval(interval);
   }, []);
 
   return (
     <div className="real-time-chart-container">
       <h2>Real-Time Chart</h2>
-      <Line data={chartData} />
+
+      <div className="chart-toggle-buttons">
+        <button
+          className={`chart-toggle-button ${chartType === 'Line' ? 'active' : ''}`}
+          onClick={() => setChartType('Line')}
+        >
+          Line
+        </button>
+        <button
+          className={`chart-toggle-button ${chartType === 'Bar' ? 'active' : ''}`}
+          onClick={() => setChartType('Bar')}
+        >
+          Bar
+        </button>
+      </div>
+      {chartType==="Line"?(<Chart type='line' data={chartData} />):(<Chart type='bar' data={barChartData} />)}
+      
+      {/* <Chart type='bar' data={barChartData} /> */}
+
+      {/* {chartType === 'Line' && <Line data={chartData} />}
+      {chartType === 'Bar' && <Bar data={barChartData} />} */}
     </div>
   );
-};
+}
+
 export default StockChart;
